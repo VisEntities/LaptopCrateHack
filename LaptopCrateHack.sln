@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaptopCrateHack", "LaptopCrateHack.csproj", "{27F12C01-4543-4B06-8123-32C63BC5A04A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27F12C01-4543-4B06-8123-32C63BC5A04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F12C01-4543-4B06-8123-32C63BC5A04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F12C01-4543-4B06-8123-32C63BC5A04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F12C01-4543-4B06-8123-32C63BC5A04A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D45E1E14-2EC4-4AC3-85DE-9EE2448B7489}
+	EndGlobalSection
+EndGlobal
