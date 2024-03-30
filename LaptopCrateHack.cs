@@ -1,8 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using ConVar;
+using Network;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Oxide.Core.Plugins;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Assertions;
 
 /*
  * Rewritten from scratch and maintained to present by VisEntities
@@ -29,7 +33,8 @@ namespace Oxide.Plugins
         private static Configuration _config;
         
         private const int ITEM_ID_COMPUTER = 1523195708;
-        
+        private const string FX_CODE_LOCK_SHOCK = "assets/prefabs/locks/keypad/effects/lock.code.shock.prefab";
+
         private Dictionary<ulong, DateTime> _playerLastHackTimes = new Dictionary<ulong, DateTime>();
         
         #endregion Fields
@@ -140,6 +145,7 @@ namespace Oxide.Plugins
             if (activeItem == null || activeItem.info.itemid != ITEM_ID_COMPUTER || activeItem.amount < _config.RequiredTargetingComputersForHack)
             {
                 SendReplyToPlayer(player, Lang.NeedTargetingComputer, _config.RequiredTargetingComputersForHack);
+                OnCrateHackFailed(crate);
                 return true;
             }
 
@@ -150,6 +156,7 @@ namespace Oxide.Plugins
                 {
                     var timeLeft = _config.CooldownBetweenHacksSeconds - timeSinceLastHack.TotalSeconds;
                     SendReplyToPlayer(player, Lang.CooldownBeforeNextHack, timeLeft);
+                    OnCrateHackFailed(crate);
                     return true;
                 }
             }
@@ -234,6 +241,15 @@ namespace Oxide.Plugins
 
         #endregion Friend Integration
 
+        #region Functions
+        
+        private void OnCrateHackFailed(HackableLockedCrate crate)
+        {
+            RunEffect(FX_CODE_LOCK_SHOCK, crate.transform.TransformPoint(new Vector3(0.02f, 1.10f, 0.56f)), Vector3.up);
+        }
+
+        #endregion Functions
+
         #region Helper Functions
 
         public static bool VerifyPluginBeingLoaded(Plugin plugin)
@@ -250,6 +266,11 @@ namespace Oxide.Plugins
                 return true;
 
             return false;
+        }
+
+        private static void RunEffect(string prefab, Vector3 worldPosition = default(Vector3), Vector3 worldDirection = default(Vector3), Connection effectRecipient = null, bool sendToAll = false)
+        {
+            Effect.server.Run(prefab, worldPosition, worldDirection, effectRecipient, sendToAll);
         }
 
         #endregion Helper Functions
