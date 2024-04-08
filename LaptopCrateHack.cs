@@ -1,12 +1,9 @@
-﻿using ConVar;
-using Network;
+﻿using Network;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Oxide.Core.Plugins;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 /*
  * Rewritten from scratch and maintained to present by VisEntities
@@ -16,7 +13,7 @@ using UnityEngine.Assertions;
 
 namespace Oxide.Plugins
 {
-    [Info("Laptop Crate Hack", "VisEntities", "2.0.0")]
+    [Info("Laptop Crate Hack", "VisEntities", "2.0.1")]
     [Description("Hack locked crates using targeting computers.")]
     public class LaptopCrateHack : RustPlugin
     {
@@ -141,12 +138,15 @@ namespace Oxide.Plugins
             if (player == null || crate == null)
                 return null;
 
-            Item activeItem = player.GetActiveItem();
-            if (activeItem == null || activeItem.info.itemid != ITEM_ID_COMPUTER || activeItem.amount < _config.RequiredTargetingComputersForHack)
+            if (_config.RequiredTargetingComputersForHack > 0)
             {
-                SendReplyToPlayer(player, Lang.NeedTargetingComputer, _config.RequiredTargetingComputersForHack);
-                OnCrateHackFailed(crate);
-                return true;
+                Item activeItem = player.GetActiveItem();
+                if (activeItem == null || activeItem.info.itemid != ITEM_ID_COMPUTER || activeItem.amount < _config.RequiredTargetingComputersForHack)
+                {
+                    SendReplyToPlayer(player, Lang.NeedTargetingComputer, _config.RequiredTargetingComputersForHack);
+                    OnCrateHackFailed(crate);
+                    return true;
+                }
             }
 
             if (_playerLastHackTimes.TryGetValue(player.userID, out DateTime lastHackTime))
