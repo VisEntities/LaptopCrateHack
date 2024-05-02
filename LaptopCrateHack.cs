@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Oxide.Plugins
 {
-    [Info("Laptop Crate Hack", "VisEntities", "2.0.1")]
+    [Info("Laptop Crate Hack", "VisEntities", "2.0.2")]
     [Description("Hack locked crates using targeting computers.")]
     public class LaptopCrateHack : RustPlugin
     {
@@ -167,10 +167,10 @@ namespace Oxide.Plugins
 
         private void OnCrateHack(HackableLockedCrate crate)
         {
-            if (crate == null || crate.OriginalHackerPlayer == 0)
+            if (crate == null || crate.originalHackerPlayerId == 0)
                 return;
 
-            BasePlayer player = BasePlayer.FindByID(crate.OriginalHackerPlayer);
+            BasePlayer player = BasePlayer.FindByID(crate.originalHackerPlayerId);
             if (player != null)
             {
                 _playerLastHackTimes[player.userID] = DateTime.UtcNow;
@@ -191,11 +191,11 @@ namespace Oxide.Plugins
             if (crate == null || player == null)
                 return null;
 
-            if (_config.CrateLootableByHackerOnly && crate.OriginalHackerPlayer != player.userID)
+            if (_config.CrateLootableByHackerOnly && crate.originalHackerPlayerId != player.userID)
             {
-                bool isTeammate = _config.CanBeLootedByHackerTeammates && AreTeammates(player, crate.OriginalHackerPlayer);
-                bool isFriend = _config.CanBeLootedByHackerFriends && FriendUtil.AreFriends(player.userID, crate.OriginalHackerPlayer);
-                bool isClanmate = _config.CanBeLootedByHackerClanmates && ClanUtil.AreClanmates(player.userID, crate.OriginalHackerPlayer);
+                bool isTeammate = _config.CanBeLootedByHackerTeammates && AreTeammates(player, crate.originalHackerPlayerId);
+                bool isFriend = _config.CanBeLootedByHackerFriends && FriendUtil.AreFriends(player.userID, crate.originalHackerPlayerId);
+                bool isClanmate = _config.CanBeLootedByHackerClanmates && ClanUtil.AreClanmates(player.userID, crate.originalHackerPlayerId);
 
                 if (isTeammate || isFriend || isClanmate)
                     return null;
